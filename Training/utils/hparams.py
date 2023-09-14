@@ -1,7 +1,7 @@
 import os
 
 hparams_template = {
-    "net": "",  # which net do you want to train (VGG_11/VGG_NET)
+    "net": "",  # which net do you want to train (VGG_11/VGG_16)
     "name": "",  # whatever you want to name your run
     "n_epochs": 300,
     "model_save_dir": None,  # where will checkpoints be stored

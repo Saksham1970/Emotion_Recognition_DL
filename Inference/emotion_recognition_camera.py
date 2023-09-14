@@ -3,7 +3,12 @@
 subjects_are_far = False
 padding = [0.5, 0.1, 0.2, 0.2]
 model = 2
-record_button = 114
+top_emotions = 3
+
+record_button = 114 #q
+exit_button = 101 #e
+change_model_button = 99 #c
+
 
 # ------------------------------------CODE-----------------------------------------------------------------
 
@@ -77,7 +82,7 @@ with mp_face_detection.FaceDetection(
                 # cv2.imshow('Crop', cv2.cvtColor(image[rect_coords[1,1]:rect_coords[0,1], rect_coords[0,0]:rect_coords[1,0]], cv2.COLOR_BGR2GRAY))
 
             if faces:
-                emotions = predict(torch.stack(faces), top_n=3)
+                emotions = predict(torch.stack(faces), top_n=top_emotions)
 
                 for i in range(len(emotions)):
                     image = cv2.rectangle(
@@ -111,7 +116,7 @@ with mp_face_detection.FaceDetection(
                             cv2.LINE_AA,
                         )
 
-        info_text = f"Dataset of Model : {working_model()}\nc: Change model\nEsc: Exit\n{chr(record_button)}: Record"
+        info_text = f"Dataset of Model : {working_model()}\n{chr(change_model_button)}: Change model\n{chr(exit_button)}: Exit\n{chr(record_button)}: Record"
 
         y0, dy = 20, 25
         for i, line in enumerate(info_text.split("\n")):
@@ -129,10 +134,10 @@ with mp_face_detection.FaceDetection(
 
         cv2.imshow("Emotion Recognition", image)
         key_pressed = cv2.waitKey(5) & 0xFF
-
-        if key_pressed == 27:
+    
+        if key_pressed == exit_button:
             break
-        elif key_pressed == 99:
+        elif key_pressed == change_model_button:
             next_model()
             transform = get_transform()
 

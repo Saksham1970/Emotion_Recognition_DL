@@ -2,10 +2,16 @@
 
 subjects_are_far = True
 padding = [0.5, 0.1, 0.2, 0.2]
-model = 2
+model = 0
 path = "./Friends Clip/Friends Clip.mp4"
-output_path = "./Friends Clip/Friends Clip(Emotion) FERplus.mp4"
+output_path = "./Friends Clip/Friends Clip(Emotion) CFD.mp4"
 
+top_emotions = 1
+
+emotion_text_size = 2
+emotion_text_thickness = 3
+info_text_size = 1
+info_text_thickness = 2
 
 # ------------------------------------CODE-----------------------------------------------------------------
 
@@ -93,7 +99,7 @@ with mp_face_detection.FaceDetection(
                 # cv2.imshow('Crop', cv2.cvtColor(image[rect_coords[1,1]:rect_coords[0,1], rect_coords[0,0]:rect_coords[1,0]], cv2.COLOR_BGR2GRAY))
 
             if faces:
-                emotions = predict(torch.stack(faces), top_n=3)
+                emotions = predict(torch.stack(faces), top_n=top_emotions)
 
                 for i in range(len(emotions)):
                     image = cv2.rectangle(
@@ -104,9 +110,9 @@ with mp_face_detection.FaceDetection(
                         emotions[i, 0],
                         face_coords[i][0],
                         cv2.FONT_HERSHEY_SIMPLEX,
-                        1,
+                        emotion_text_size,
                         (255, 0, 0),
-                        2,
+                        emotion_text_thickness,
                         cv2.LINE_AA,
                     )
 
@@ -121,9 +127,9 @@ with mp_face_detection.FaceDetection(
                             line,
                             c,
                             cv2.FONT_HERSHEY_SIMPLEX,
-                            1,
+                            emotion_text_size,
                             (147, 1, 113),
-                            2,
+                            emotion_text_thickness,
                             cv2.LINE_AA,
                         )
 
@@ -137,9 +143,9 @@ with mp_face_detection.FaceDetection(
                 line,
                 (5, y),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.5,
+                info_text_size,
                 (0, 0, 0),
-                1,
+                info_text_thickness,
                 cv2.LINE_AA,
             )
         out.write(image)
